@@ -1,11 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
 	"strings"
 	"time"
 
@@ -21,41 +19,42 @@ func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *server) routes() {
-    log.Println("Register routes.")
-    s.router.HandleFunc("/", healthCheckMiddleware(s.handleRoot()))
+	log.Println("Register routes.")
+	s.router.HandleFunc("/", healthCheckMiddleware(s.handleCats()))
 }
 
+// healthcheck for aws fargate -> standard path is root
 func healthCheckMiddleware(next http.Handler) http.HandlerFunc {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request)  {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if strings.Contains(r.UserAgent(), "ELB-HealthChecker") {
 			w.WriteHeader(http.StatusOK)
 			w.Write([]byte("healthcheck okay!"))
 			return
 		}
-		
+
 		next.ServeHTTP(w, r)
 	})
 }
 
-func (s *server) handleRoot() http.HandlerFunc {
-    return func(w http.ResponseWriter, r *http.Request) {
-        endpoint := fmt.Sprintf("http://cat.%s:8080/", os.Getenv("COPILOT_SERVICE_DISCOVERY_ENDPOINT"))
+func (s *server) handleCats() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		resp, err := http.Get("https://cat-fact.herokuapp.com/facts")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		defer resp.Body.Close()
+		body, _ := ioutil.ReadAll(r.Body)
+		
+		log.Println(body)
 
-        resp, err := http.Get(endpoint)
-        if err != nil {
-            http.Error(w, err.Error(), http.StatusInternalServerError)
-            return
-        }
-        defer resp.Body.Close()
-        body, _ := ioutil.ReadAll(r.Body)
-
-        w.WriteHeader(http.StatusOK)
-        w.Write(body)
-    }
+		w.WriteHeader(http.StatusOK)
+		w.Write(body)
+	}
 }
 
 func main() {
-    port := ":8080"
+	port := ":8080"
 	log.Printf("Starting server on port %s\n", port)
 
 	handler := &server{

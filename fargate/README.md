@@ -72,11 +72,21 @@ Dabei unterscheiden wir öffentliche Microservices, wie der API-Service, und bac
 
 Der folgende Befehl stellt den API Service bereit. 
 Dafür muss der Pfad zur Dockerfile, ein Name und der Typ angegeben werden.
-Mittel `--deploy` wird der Service in einem Testsystem bereitgestellt und nicht produktive.
+Mittels `--deploy` wird der Service in einem Testsystem bereitgestellt und nicht produktive.
 Der Typ `Load Balanced Web Service` sorgt für die Erstellung eines öffentlich zugänglichen ELBs.
 
 ```bash
 copilot init -n api -t "Load Balanced Web Service" -d ./api/Dockerfile --deploy
+```
+
+Nachdem der Service initialisiert wurde kann unter `./copilot/api/manifest` die genaue Konfiguration gefunden werden.
+Es muss nun noch unter `http:` der Healthcheckendpoint hinzugefügt werden.
+Ungefähr so:
+
+```yaml
+http:
+  path: '/'
+  healthcheck: '/_healthcheck'
 ```
 
 Das entsprechende Container Image wird nun mittel dem lokalen Docker gebaut und in das ECR gepusht, von wo es dann innerhalb der AWS verwendet werden kann.
