@@ -51,7 +51,7 @@ func (s *server) handleGetUsers() http.HandlerFunc {
 		}{
 			{"Tom", 32},
 			{"Jim", 55},
-			{"Luna", 19}
+			{"Luna", 19},
 		}
 
 		w.WriteHeader(http.StatusOK)

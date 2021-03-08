@@ -1,13 +1,11 @@
 package main
 
 import (
-	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
 	"strings"
 	"time"
+	"encoding/json"
 
 	"github.com/gorilla/mux"
 )
@@ -46,7 +44,7 @@ func (s *server) handleProduct() http.HandlerFunc {
 			Description string `json:"description"`
 		}{
 			{"Auto", 20, "Ganz schnell"},
-			{"Computer", 42, "Ganz schnell"}
+			{"Computer", 42, "Ganz schnell"},
 		}
 
         w.WriteHeader(http.StatusBadRequest)

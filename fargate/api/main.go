@@ -41,7 +41,7 @@ func healthCheckMiddleware(next http.Handler) http.HandlerFunc {
 
 func (s *server) handleProducts() http.HandlerFunc {
     return func(w http.ResponseWriter, r *http.Request) {
-        endpoint := fmt.Sprintf("http://product.%s:8080/", os.Getenv("COPILOT_SERVICE_DISCOVERY_ENDPOINT"))
+        endpoint := fmt.Sprintf("http://product.%s:8080/products", os.Getenv("COPILOT_SERVICE_DISCOVERY_ENDPOINT"))
 
 		if r.Method == http.MethodGet {
 			w.WriteHeader(http.StatusOK)
@@ -51,7 +51,8 @@ func (s *server) handleProducts() http.HandlerFunc {
 				return
 			}
 			w.WriteHeader(http.StatusOK)
-			w.Write(ioutil.ReadAll(res.Body))
+			body, _ :=ioutil.ReadAll(res.Body)
+			w.Write(body)
 			return
 		}
 
@@ -61,7 +62,7 @@ func (s *server) handleProducts() http.HandlerFunc {
 
 func (s *server) handleUsers() http.HandlerFunc {
     return func(w http.ResponseWriter, r *http.Request) {
-        endpoint := fmt.Sprintf("http://user.%s:8080/", os.Getenv("COPILOT_SERVICE_DISCOVERY_ENDPOINT"))
+        endpoint := fmt.Sprintf("http://user.%s:8080/users", os.Getenv("COPILOT_SERVICE_DISCOVERY_ENDPOINT"))
 
 		if r.Method == http.MethodGet {
 			w.WriteHeader(http.StatusOK)
@@ -71,7 +72,8 @@ func (s *server) handleUsers() http.HandlerFunc {
 				return
 			}
 			w.WriteHeader(http.StatusOK)
-			w.Write(ioutil.ReadAll(res.Body))
+			body, _ :=ioutil.ReadAll(res.Body)
+			w.Write(body)
 			return
 		}
 
