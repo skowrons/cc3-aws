@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"strings"
@@ -21,7 +20,7 @@ func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func (s *server) routes() {
 	log.Println("Register routes.")
-	s.router.HandleFunc("/", healthCheckMiddleware(nil)) // only used for standard healthcheck
+	s.router.HandleFunc("/", healthCheckMiddleware(s.handleRoot())) // only used for standard healthcheck
 	s.router.HandleFunc("/users", s.handleGetUsers()).Methods(http.MethodGet)
 }
 
@@ -38,15 +37,25 @@ func healthCheckMiddleware(next http.Handler) http.HandlerFunc {
 	})
 }
 
+func (s *server) handleRoot() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	}
+}
+
 func (s *server) handleGetUsers() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		users := []struct{
+		users := []struct {
 			Name string `json:"name"`
-			Age int `json:"age"`
-		}{}
+			Age  int    `json:"age"`
+		}{
+			{"Tom", 32},
+			{"Jim", 55},
+			{"Luna", 19}
+		}
 
 		w.WriteHeader(http.StatusOK)
-		w.Write(json.Marshal(users))
+		json.NewEncoder(w).Encode(users)
 	}
 }
 

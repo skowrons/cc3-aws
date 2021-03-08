@@ -17,6 +17,12 @@ init () {
     copilot init -n user -t "Backend Service" -d ./user/Dockerfile --deploy
     echo ""
 
+    echo "+------------------------+"
+    echo "| deploy product service |"
+    echo "+------------------------+"
+    copilot init -n product -t "Backend Service" -d ./product/Dockerfile --deploy
+    echo ""
+
     echo "everything is set up - showing services"
     copilot svc ls
 

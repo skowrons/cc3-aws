@@ -23,8 +23,7 @@ func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func (s *server) routes() {
     log.Println("Register routes.")
     s.router.HandleFunc("/", healthCheckMiddleware(s.handleRoot()))
-    s.router.HandleFunc("/users", s.handleUsers())
-    s.router.HandleFunc("/products", s.handleProducts())
+    s.router.HandleFunc("/products", s.handleProduct()).Methods(http.MethodGet)
 }
 
 func healthCheckMiddleware(next http.Handler) http.HandlerFunc {
@@ -39,43 +38,19 @@ func healthCheckMiddleware(next http.Handler) http.HandlerFunc {
 	})
 }
 
-func (s *server) handleProducts() http.HandlerFunc {
+func (s *server) handleProduct() http.HandlerFunc {
     return func(w http.ResponseWriter, r *http.Request) {
-        endpoint := fmt.Sprintf("http://product.%s:8080/", os.Getenv("COPILOT_SERVICE_DISCOVERY_ENDPOINT"))
-
-		if r.Method == http.MethodGet {
-			w.WriteHeader(http.StatusOK)
-			res, err := http.Get(endpoint)
-			if err != nil {
-				http.Error(w, "error from upstream product service", http.StatusInternalServerError)
-				return
-			}
-			w.WriteHeader(http.StatusOK)
-			w.Write(ioutil.ReadAll(res.Body))
-			return
+		products := []struct{
+			Name string `json:"name"`
+			Store int `json:"store"`
+			Description string `json:"description"`
+		}{
+			{"Auto", 20, "Ganz schnell"},
+			{"Computer", 42, "Ganz schnell"}
 		}
 
         w.WriteHeader(http.StatusBadRequest)
-    }
-}
-
-func (s *server) handleUsers() http.HandlerFunc {
-    return func(w http.ResponseWriter, r *http.Request) {
-        endpoint := fmt.Sprintf("http://user.%s:8080/", os.Getenv("COPILOT_SERVICE_DISCOVERY_ENDPOINT"))
-
-		if r.Method == http.MethodGet {
-			w.WriteHeader(http.StatusOK)
-			res, err := http.Get(endpoint)
-			if err != nil {
-				http.Error(w, "error from upstream user service", http.StatusInternalServerError)
-				return
-			}
-			w.WriteHeader(http.StatusOK)
-			w.Write(ioutil.ReadAll(res.Body))
-			return
-		}
-
-        w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(products)
     }
 }
 
@@ -87,7 +62,7 @@ func (s *server) handleRoot() http.HandlerFunc {
 
 func main() {
     port := ":8080"
-	log.Printf("Starting server on port %s\n", port)
+	log.Printf("Starting product server on port %s\n", port)
 
 	handler := &server{
 		router: mux.NewRouter(),
