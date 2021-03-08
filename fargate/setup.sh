@@ -11,10 +11,10 @@ init () {
     copilot init -n api -t "Load Balanced Web Service" -d ./api/Dockerfile --deploy 
     echo ""
 
-    echo "+--------------------+"
-    echo "| deploy cat service |"
-    echo "+--------------------+"
-    copilot init -n cat -t "Backend Service" -d ./cat/Dockerfile --deploy
+    echo "+-------------------=-+"
+    echo "| deploy user service |"
+    echo "+-----------------=---+"
+    copilot init -n user -t "Backend Service" -d ./user/Dockerfile --deploy
     echo ""
 
     echo "everything is set up - showing services"

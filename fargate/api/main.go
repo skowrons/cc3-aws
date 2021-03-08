@@ -23,6 +23,7 @@ func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func (s *server) routes() {
     log.Println("Register routes.")
     s.router.HandleFunc("/", healthCheckMiddleware(s.handleRoot()))
+    s.router.HandleFunc("/users", s.handleUsers())
 }
 
 func healthCheckMiddleware(next http.Handler) http.HandlerFunc {
@@ -37,20 +38,29 @@ func healthCheckMiddleware(next http.Handler) http.HandlerFunc {
 	})
 }
 
+func (s *server) handleUsers() http.HandlerFunc {
+    return func(w http.ResponseWriter, r *http.Request) {
+        endpoint := fmt.Sprintf("http://user.%s:8080/", os.Getenv("COPILOT_SERVICE_DISCOVERY_ENDPOINT"))
+
+		if r.Method == http.MethodGet {
+			w.WriteHeader(http.StatusOK)
+			res, err := http.Get(endpoint)
+			if err != nil {
+				http.Error(w, "error from upstream user service", http.StatusInternalServerError)
+				return
+			}
+			w.WriteHeader(http.StatusOK)
+			w.Write(ioutil.ReadAll(res.Body))
+			return
+		}
+
+        w.WriteHeader(http.StatusBadRequest)
+    }
+}
+
 func (s *server) handleRoot() http.HandlerFunc {
     return func(w http.ResponseWriter, r *http.Request) {
-        endpoint := fmt.Sprintf("http://cat.%s:8080/", os.Getenv("COPILOT_SERVICE_DISCOVERY_ENDPOINT"))
-
-        resp, err := http.Get(endpoint)
-        if err != nil {
-            http.Error(w, err.Error(), http.StatusInternalServerError)
-            return
-        }
-        defer resp.Body.Close()
-        body, _ := ioutil.ReadAll(r.Body)
-
         w.WriteHeader(http.StatusOK)
-        w.Write(body)
     }
 }
 

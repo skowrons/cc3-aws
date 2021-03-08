@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -20,7 +21,8 @@ func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func (s *server) routes() {
 	log.Println("Register routes.")
-	s.router.HandleFunc("/", healthCheckMiddleware(s.handleCats()))
+	s.router.HandleFunc("/", healthCheckMiddleware(nil)) // only used for standard healthcheck
+	s.router.HandleFunc("/users", s.handleGetUsers()).Methods(http.MethodGet)
 }
 
 // healthcheck for aws fargate -> standard path is root
@@ -36,26 +38,21 @@ func healthCheckMiddleware(next http.Handler) http.HandlerFunc {
 	})
 }
 
-func (s *server) handleCats() http.HandlerFunc {
+func (s *server) handleGetUsers() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		resp, err := http.Get("https://cat-fact.herokuapp.com/facts")
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		defer resp.Body.Close()
-		body, _ := ioutil.ReadAll(r.Body)
-		
-		log.Println(body)
+		users := []struct{
+			Name string `json:"name"`
+			Age int `json:"age"`
+		}{}
 
 		w.WriteHeader(http.StatusOK)
-		w.Write(body)
+		w.Write(json.Marshal(users))
 	}
 }
 
 func main() {
 	port := ":8080"
-	log.Printf("Starting server on port %s\n", port)
+	log.Printf("Starting user server on port %s\n", port)
 
 	handler := &server{
 		router: mux.NewRouter(),
