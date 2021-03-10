@@ -41,6 +41,10 @@ public () {
     fi
 }
 
+delete () {
+    copilot app delete
+}
+
 printHelp () {
     echo "Please provide a valid parameter."
     echo ""
@@ -51,12 +55,8 @@ printHelp () {
     echo ""
     echo "public NAME - show public reachable api for the given name, if no name is provided use standard"
     echo -e "\te.c. ./setup.sh public catapp"
-}
-
-test () {
-    echo "start sleep 10"
-    sleep 10
-    echo "finished sleep"
+    echo ""
+    echo "delete - delete an app and all of its resources"
 }
 
 case "$1" in
@@ -64,6 +64,8 @@ case "$1" in
         init $2;;
     "public")
         public $2;;
+    "delete")
+        delete;;
     "help")
         printHelp
         exit 0;;
