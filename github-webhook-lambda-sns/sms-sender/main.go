@@ -20,7 +20,7 @@ func HandleRequest(r events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	log.Println("Received a github event!")
 	log.Println(r.Body)
 
-	if strings.Contains(r.Body, "skowrons") {
+	if strings.Contains(r.Body, "github") {
 		log.Println("creating session")
 		sess := session.Must(session.NewSession())
 		log.Println("session created")
