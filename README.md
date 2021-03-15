@@ -8,7 +8,8 @@ Lambda Funktionen können gut für verschiedene Aufgaben im DevOps Bereich genut
 So könnte wenn eine CI/CD Pipeline fehlschlägt mittels Webhooks eine SMS an entsprechendes Personal versendet werden.
 
 In diesem Beispiel wird bei jedem Commit ein Webhook getriggert, welcher dann eine SMS versendet mittels eines Lambdas.
- 
+
+```
  ┌──────────────────────────────────────┐
  │GitHub / GitLab                       │
  │                                      │
@@ -40,6 +41,7 @@ In diesem Beispiel wird bei jedem Commit ein Webhook getriggert, welcher dann ei
             │ Smartphone  │
             │             │
             └─────────────┘
+```
 
 ## Datalake
 
@@ -49,6 +51,7 @@ Später könnten mehrere Lambdas bzw. Logik hinzukommen, die Daten je nach Typ i
 RDS, DynamoDB, EFS, S3 und co. könnten dann zum speichern von Daten dienen.
 Das gesamte Konstrukt könnte dann noch mit Cognito abgesichert werden, um den Zugriff zu beschränken.
 
+```
                                             ┌───────────────┐
                                             │               │
  speichern/     ┌─────────────┐    ┌────────┤ eingehangenes │
@@ -58,9 +61,11 @@ Das gesamte Konstrukt könnte dann noch mit Cognito abgesichert werden, um den Z
                 └─────────────┘    └────────┤ (EFS)         │
                                             │               │
                                             └───────────────┘
+```
 
 ## Fargate PaaS mit Copilot
 
+```
                           Request
                              │
                              ▼
@@ -88,4 +93,4 @@ Das gesamte Konstrukt könnte dann noch mit Cognito abgesichert werden, um den Z
  │  └───────────┘   └─────────────────┘               │
  │                                                    │
  └────────────────────────────────────────────────────┘
-
+```

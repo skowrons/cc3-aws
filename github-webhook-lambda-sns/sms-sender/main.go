@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -12,9 +13,6 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/sns"
 )
-
-// PhoneNumber must be changed
-const PhoneNumber = "+49 176 12312312"
 
 func HandleRequest(r events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	log.Println("Received a github event!")
@@ -31,7 +29,7 @@ func HandleRequest(r events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 
 		params := &sns.PublishInput{
 			Message:     aws.String(msg),
-			PhoneNumber: aws.String(PhoneNumber),
+			PhoneNumber: aws.String(os.Getenv("PHONENUMBER")),
 		}
 		resp, err := svc.Publish(params)
 		if err != nil {
