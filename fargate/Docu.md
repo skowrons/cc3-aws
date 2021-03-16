@@ -155,6 +155,12 @@ Dieses verhalten kann in den YAML Manifest Dateien der einzelnen Services übers
 Sollte aber ein neuer Service direkt mit `--deploy` bereitgestellt werden, dann konnte man diesen Endpunkt noch nicht überschreiben.
 Folge wenn es keinen Handler für `/` gibt oder dieser keinen Erfolg (Statuscode 20x) zurückgibt wird der Prozess nie erfolgreich Enden obwohl der Service längst bereitgestellt wurde.
 
+### Bereitstellungsfehler
+
+Es kann der Fehler `execute svc deploy: deploy service: change set with name ...` bei Bereitstellen von Änderungen auftreten.
+Copilot nutzt git Commits um Änderungen mitzubekommen.
+D.h. sollten Änderungen nicht Commited sein kann nicht deployt werden, da schon ein Deployment für den momentanen Commit existiert.
+
 ## Erweiterungspotential
 
 ### API Gateway
