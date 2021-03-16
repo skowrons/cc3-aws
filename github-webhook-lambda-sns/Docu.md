@@ -43,7 +43,8 @@ Diese nutzt die AWS SDK um mittels SNS eine SMS an eine definierte Rufnummer zu 
 > Nur notwendig wenn Änderungen am Code vorgenommen wurden.
 
 Es muss Go auf dem entsprechenden System installiert sein.
-Installationsanweisungen können [hier gefunden werden.](https://golang.org/doc/install)
+Installationsanweisungen können hier gefunden werden.
+https://golang.org/doc/install
 
 Nun muss in den Ordner `./cc3-aws/github-webhook-lambda-sns/sms-sender` navigiert werden.
 Dort wird der folgende Befehl ausgeführt:

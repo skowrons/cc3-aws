@@ -33,7 +33,8 @@ Das Speichern und Lesen wird hierbei von einer Lambda funktion übernommen, dami
 > Nur notwendig wenn Änderungen am Code vorgenommen wurden.
 
 Es muss Go auf dem entsprechenden System installiert sein.
-Installationsanweisungen können [hier gefunden werden.](https://golang.org/doc/install)
+Installationsanweisungen können hier gefunden werden.
+https://golang.org/doc/install
 
 Nun muss in den Ordner `./cc3-aws/datalake/writereadfs` navigiert werden.
 Dort wird der folgende Befehl ausgeführt:
