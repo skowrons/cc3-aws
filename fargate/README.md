@@ -9,20 +9,6 @@
 - copilot-cli installiert
 - docker lokal auf dem System vorhanden
 
-### AWS-CLI installieren
-
-Anweisungen zum installieren der CLI für die entsprechenden Betriebssysteme können [hier gefunden werden.](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
-
-Nach erfolgreicher Installation muss die CLI noch eingerichtet werden. 
-Mit folgendem Befehl kann eine Referenz auf einen AWS Account hergestellt werden.
-```bash
-aws configure
-```
-
-### Copilot-CLI installieren
-
-Entsprechende Anweisungen sind [hier zu finden.](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/AWS_Copilot.html#copilot-install)
-
 ### Docker installieren
 
 Alle wichtigen Schritte sind in der [Docker Dokumentation beschrieben.](https://docs.docker.com/get-docker/)
@@ -32,6 +18,7 @@ Alle wichtigen Schritte sind in der [Docker Dokumentation beschrieben.](https://
 Copilot benutzt Fargate, ECR, ELB und Cloud Formation, um die als Dockerfile vorhandenen Microservices automatisch bereitzustellen.
 Am Ende entsteht folgendes Konstrukt, insofern alle Befehle entsprechend ausgeführt wurden:
 
+```
                 Request
                    |
                    v
@@ -59,6 +46,7 @@ Am Ende entsteht folgendes Konstrukt, insofern alle Befehle entsprechend ausgef�
 |         +-----------------+               |
 |                                           |
 +-------------------------------------------+
+```
 
 Um Copilot und Fargate zu initialisieren muss der folgende Befehl ausgeführt werden:
 

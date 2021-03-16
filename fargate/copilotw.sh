@@ -11,9 +11,9 @@ init () {
     copilot init -n api -t "Load Balanced Web Service" -d ./api/Dockerfile --deploy 
     echo ""
 
-    echo "+-------------------=-+"
+    echo "+---------------------+"
     echo "| deploy user service |"
-    echo "+-----------------=---+"
+    echo "+---------------------+"
     copilot init -n user -t "Backend Service" -d ./user/Dockerfile --deploy
     echo ""
 
@@ -42,7 +42,7 @@ public () {
 }
 
 delete () {
-    copilot app delete
+    copilot app delete $1
 }
 
 printHelp () {
@@ -56,7 +56,7 @@ printHelp () {
     echo "public NAME - show public reachable api for the given name, if no name is provided use standard"
     echo -e "\te.c. ./setup.sh public catapp"
     echo ""
-    echo "delete - delete an app and all of its resources"
+    echo "delete NAME - delete an app and all of its resources"
 }
 
 case "$1" in
@@ -65,7 +65,7 @@ case "$1" in
     "public")
         public $2;;
     "delete")
-        delete;;
+        delete $2;;
     "help")
         printHelp
         exit 0;;
