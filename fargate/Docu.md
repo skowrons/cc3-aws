@@ -161,6 +161,14 @@ Es kann der Fehler `execute svc deploy: deploy service: change set with name ...
 Copilot nutzt git Commits um Änderungen mitzubekommen.
 D.h. sollten Änderungen nicht Commited sein kann nicht deployt werden, da schon ein Deployment für den momentanen Commit existiert.
 
+Möchte man etwas testen ohne es zwangläufig zu commiten kann ein leerer commit erzeugt werden, welcher nach dem update rückgängig gemacht wird.
+
+```bash
+git commit -m "invoke" --allow-empty && \
+copilot deploy && \
+git reset HEAD^
+```
+
 ## Erweiterungspotential
 
 ### API Gateway
