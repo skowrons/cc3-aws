@@ -92,6 +92,7 @@ Dann muss die Richtlinie `AmazonSNSFullAccess` hinzugefügt werden.
 
 ![](./images/lambda_permission.png)
 
+Danach kann in der Lambdafunktion unter dem Reiter `Code` mit dem Button `Hochladen von` die erstellte / vorhandene ZIP-Datei hochgeladen werden.
 Die Lambda Funktion ist nun fertig aufgesetzt.
 
 ### API Gateway 
