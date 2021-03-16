@@ -45,6 +45,7 @@ func (s *server) handleProduct() http.HandlerFunc {
 		}{
 			{"Auto", 20, "Ganz schnell"},
 			{"Computer", 42, "Ganz schnell"},
+			{"KVM Switch", 52, "Ganz teuer"},
 		}
 
         w.WriteHeader(http.StatusBadRequest)
